@@ -10,20 +10,7 @@ const switchTab = distance => selectActiveTab(activeTabs => {
     });
 });
 
-const rearrangeTab = tabId => () => tabs.move(tabId, {index: -1});
-
 const executeCode = code => selectActiveTab(({tabId}) => executeScript(tabId, {code})); 
-
-let rearrangeReference = null;
-
-onActivated.addListener(({tabId}) => {
-    get(tabId, ({pinned}) => {
-        clearTimeout(rearrangeReference);
-        if (!pinned) {
-            rearrangeReference = setTimeout(rearrangeTab(tabId), 1000);
-        }
-    })
-});
 
 commands.onCommand.addListener(command => {
     switch(command) {
