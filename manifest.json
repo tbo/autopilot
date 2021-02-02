@@ -1,31 +1,32 @@
 {
-    "name": "Autopilot",
-    "version": "0.1",
-    "description": "Autopilot organizes tabs",
-    "background": {
-        "persistent": false,
-        "scripts": ["background.js"]
+  "name": "Autopilot",
+  "version": "0.1",
+  "description": "Autopilot organizes tabs",
+  "background": {
+    "persistent": false,
+    "scripts": ["background.js"]
+  },
+  "permissions": ["activeTab"],
+  "commands": {
+    "switch-to-next-tab": {
+      "suggested_key": { "default": "Alt+Shift+J" },
+      "description": "switch to next tab"
     },
-    "permissions": [
-        "activeTab"
-    ],
-    "commands": {
-        "switch-to-next-tab": {
-            "suggested_key": { "default": "Ctrl+J" },
-            "description": "switch to next tab"
-        },
-        "switch-to-previous-tab": {
-            "suggested_key": { "default": "Ctrl+K" },
-            "description": "switch to previous tab"
-        },
-        "history-back": {
-            "suggested_key": { "default": "Ctrl+H" },
-            "description": "history back"
-        },
-        "history-forward": {
-            "suggested_key": { "default": "Ctrl+L" },
-            "description": "history forward"
-        }
+    "switch-to-previous-tab": {
+      "suggested_key": { "default": "Alt+Shift+K" },
+      "description": "switch to previous tab"
     },
-    "manifest_version": 2
+    "prepend-active-tab": {
+      "description": "prepend active tab"
+    },
+    "history-back": {
+      "suggested_key": { "default": "Ctrl+H" },
+      "description": "history back"
+    },
+    "history-forward": {
+      "suggested_key": { "default": "Ctrl+L" },
+      "description": "history forward"
+    }
+  },
+  "manifest_version": 2
 }
