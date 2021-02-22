@@ -32,9 +32,9 @@ const prependTabById = (id) =>
 const executeCode = (code) =>
   selectActiveTab(({ tabId }) => executeScript(tabId, { code }));
 
-chrome.tabs.onHighlighted.addListener(({ tabIds }) =>
-  setTimeout(() => prependTabById(tabIds[0]), 350)
-);
+// chrome.tabs.onHighlighted.addListener(({ tabIds }) =>
+//   setTimeout(() => prependTabById(tabIds[0]), 350)
+// );
 
 chrome.tabs.onActivated.addListener(({ tabId }) => prependTabById(tabId));
 
