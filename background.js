@@ -36,7 +36,9 @@ const executeCode = (code) =>
 //   setTimeout(() => prependTabById(tabIds[0]), 350)
 // );
 
-chrome.tabs.onActivated.addListener(({ tabId }) => prependTabById(tabId));
+// chrome.tabs.onActivated.addListener(({ tabId }) => prependTabById(tabId));
+
+chrome.tabs.onCreated.addListener(({ id }) => prependTabById(id));
 
 commands.onCommand.addListener((command) => {
   switch (command) {
