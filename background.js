@@ -1,24 +1,34 @@
-const { tabs, commands } = chrome;
-const { executeScript, get, query, update, onActivated } = tabs;
+const { tabs, commands, tabGroups } = chrome;
+const { executeScript, get, update, onActivated, query } = tabs;
 
-const selectActiveTab = (callback) =>
-  query({ active: true, currentWindow: true }, ([activeTab]) =>
-    callback(activeTab)
+const selectActiveTab = () => query({ active: true, currentWindow: true });
+
+const switchTab = async (distance) => {
+  const tabs = await query({ currentWindow: true });
+  const [activeTab] = tabs.filter(({ active }) => active);
+  const groupCache = {};
+  const getGroup = async (id) =>
+    groupCache[id] || (groupCache[id] = await tabGroups.get(targetTab.groupId));
+  let targetTab;
+  let step = 0;
+  do {
+    step += distance > 0 ? 1 : -1;
+    const targetIndex = (activeTab.index + step) % tabs.length;
+    const index = targetIndex >= 0 ? targetIndex : tabs.length - 1;
+    targetTab = tabs[index];
+  } while (
+    targetTab.groupId !== chrome.tabGroups.TAB_GROUP_ID_NONE &&
+    (await getGroup(targetTab.groupId)).collapsed
   );
-
-let isStatefulNavigationActive = false;
-const switchTab = (distance) =>
-  query({ currentWindow: true }, (tabs) => {
-    const [activeTab] = tabs.filter(({ active }) => active);
-    const targetIndex = (activeTab.index + distance) % tabs.length;
-    chrome.tabs.highlight({
-      tabs: targetIndex >= 0 ? targetIndex : tabs.length - 1,
-    });
-    isStatefulNavigationActive = true;
+  chrome.tabs.highlight({
+    tabs: targetTab.index,
   });
+};
 
-const executeCode = (code) =>
-  selectActiveTab(({ tabId }) => executeScript(tabId, { code }));
+const executeCode = async (code) => {
+  const { tabId } = await selectActiveTab();
+  executeScript(tabId, { code });
+};
 
 commands.onCommand.addListener((command) => {
   switch (command) {
