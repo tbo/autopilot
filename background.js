@@ -25,11 +25,6 @@ const switchTab = async (distance) => {
   });
 };
 
-const executeCode = async (code) => {
-  const { tabId } = await selectActiveTab();
-  executeScript(tabId, { code });
-};
-
 commands.onCommand.addListener((command) => {
   switch (command) {
     case "switch-to-next-tab":
@@ -39,10 +34,10 @@ commands.onCommand.addListener((command) => {
       switchTab(-1);
       break;
     case "history-back":
-      executeCode("history.back();");
+      chrome.tabs.goBack();
       break;
     case "history-forward":
-      executeCode("history.forward();");
+      chrome.tabs.goForward();
       break;
   }
 });
